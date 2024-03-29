@@ -15,6 +15,7 @@ class FirstPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(title),
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -42,7 +43,7 @@ class FirstPageForm extends StatefulWidget {
 class FirstPageFormState extends State<FirstPageForm> {
   final _formKey = GlobalKey<FormState>();
 
-  Adventure adventure = Adventure(name: "", choose: "");
+  Adventure adventure = Adventure(name: "", choose: "", uuid: "");
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +85,7 @@ class FirstPageFormState extends State<FirstPageForm> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        adventure.uuid = idGenerator();
 
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
@@ -103,5 +105,10 @@ class FirstPageFormState extends State<FirstPageForm> {
             ],
           ),
         ));
+  }
+
+  String idGenerator() {
+    final now = DateTime.now();
+    return now.microsecondsSinceEpoch.toString();
   }
 }

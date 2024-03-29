@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton_project/model/adventure.dart';
+import 'package:hackaton_project/model/story.dart';
 import 'package:hackaton_project/engine/iaengine.dart';
+import 'package:hackaton_project/db/storydatabase.dart';
 import 'package:hackaton_project/engine/iaengineservice.dart';
 import 'package:hackaton_project/pages/fourthpage.dart';
 
@@ -17,6 +19,7 @@ class TercerPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(title),
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -91,11 +94,31 @@ class TercerPageFormState extends State<TercerPageForm>
   }
 
   void _updateProcess() {
+    String uuid = adventure.uuid;
+    String story = adventure.choose;
+    String protagonist = adventure.name;
+
+    // ignore: avoid_print
+    print(
+        "[PROCESS] generating story $uuid type: $story protagonist: $protagonist");
+
     IaGeneration ia = IaGeneration(adventure: adventure);
     StoryOpenAiService storyIa = StoryOpenAiService(api: ia);
 
     storyIa.getFirstStep().then((data) {
-      if (data?.code == "200") {
+      if ((data?.code == "200") || (data?.code == "999")) {
+        Story story = Story(
+            id: 0,
+            uuid: adventure.uuid,
+            stepType: "first",
+            step: data!.step,
+            optionOne: data.optionOne,
+            optionTwo: data.optionTwo);
+
+        StoryDatabase()
+            .createDatabaseSync()
+            .then((data) => {StoryDatabase().insertStory(story)});
+
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return FourthPage(
               title:

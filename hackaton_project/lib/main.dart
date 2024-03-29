@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton_project/pages/firstpage.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io';
 
-void main() {
+void main() async {
+  if (Platform.isWindows || Platform.isLinux) {
+    sqfliteFfiInit();
+  }
+  databaseFactory = databaseFactoryFfi;
   runApp(const MainApp());
 }
 

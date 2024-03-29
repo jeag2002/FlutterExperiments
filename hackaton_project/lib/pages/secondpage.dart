@@ -16,6 +16,7 @@ class SecondPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(title),
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

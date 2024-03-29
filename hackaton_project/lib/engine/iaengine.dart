@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:hackaton_project/model/adventure.dart';
 import 'package:hackaton_project/model/stepstory.dart';
+import 'package:hackaton_project/engine/dummymessages.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -19,6 +20,9 @@ class IaGeneration {
 
     String message =
         "generate a $story story with $actor as protagonist. Stop on one point and offer two ways to continue the history";
+
+    // ignore: avoid_print
+    print("[IAENGINE] root '$message' ");
 
     String apiKey = "<google cloud key>";
 
@@ -43,16 +47,19 @@ class IaGeneration {
         StepStory(code: "", step: "", optionOne: "", optionTwo: "");
 
     String codeHttp = response.statusCode.toString();
+    // ignore: avoid_print
+    print("[IAENGINE] code $codeHttp");
+
     if (response.statusCode == 200) {
       var body = response.body;
       body = body.substring("data :".length);
       stepStory.code = response.statusCode.toString();
-      // ignore: avoid_print
-      print("CODE $codeHttp");
     } else {
-      stepStory.code = response.statusCode.toString();
-      // ignore: avoid_print
-      print("CODE $codeHttp");
+      stepStory.code = "999";
+      DummyMessages msg = DummyMessages();
+      stepStory.step = msg.messageCreation().story;
+      stepStory.optionOne = msg.messageCreation().optionOne;
+      stepStory.optionTwo = msg.messageCreation().optionTwo;
     }
 
     return stepStory;
