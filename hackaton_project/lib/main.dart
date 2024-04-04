@@ -1,13 +1,20 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter/material.dart';
 import 'package:hackaton_project/pages/firstpage.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'dart:io';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+//https://github.com/tekartik/sqflite/tree/master/packages_web/sqflite_common_ffi_web#setup-binaries
 
 void main() async {
-  if (Platform.isWindows || Platform.isLinux) {
-    sqfliteFfiInit();
+  sqfliteFfiInit();
+  if (!kIsWeb) {
+    databaseFactory = databaseFactoryFfi;
+  } else {
+    databaseFactory = databaseFactoryFfiWebNoWebWorker;
   }
-  databaseFactory = databaseFactoryFfi;
   runApp(const MainApp());
 }
 

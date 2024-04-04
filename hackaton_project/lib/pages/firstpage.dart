@@ -59,26 +59,33 @@ class FirstPageFormState extends State<FirstPageForm> {
                   width: 500,
                   height: 100,
                   child: TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "What's your name, explorer?",
-                      filled: true, //<-- SEE HERE
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    ),
-                    validator: (value) {
-                      // ignore: avoid_print
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      // ignore: avoid_print
-                      adventure.name = value!;
-                    },
-                  )),
+                      decoration: const InputDecoration(
+                        labelText: "What's your name, explorer?",
+                        filled: true, //<-- SEE HERE
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0))),
+                      ),
+                      validator: (value) {
+                        // ignore: avoid_print
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        // ignore: avoid_print
+                        adventure.name = value!;
+                      },
+                      onFieldSubmitted: (value) {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          adventure.uuid = idGenerator();
+                          _sendToSecondPage(adventure);
+                        }
+                      })),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: ElevatedButton(
@@ -86,14 +93,7 @@ class FirstPageFormState extends State<FirstPageForm> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         adventure.uuid = idGenerator();
-
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return SecondPage(
-                              title:
-                                  'Build your own adventure - Choose your journey ${adventure.name.toUpperCase()}',
-                              form: adventure);
-                        }));
+                        _sendToSecondPage(adventure);
                       }
                     },
                     style: ButtonStyle(
@@ -105,6 +105,15 @@ class FirstPageFormState extends State<FirstPageForm> {
             ],
           ),
         ));
+  }
+
+  void _sendToSecondPage(Adventure adventure) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SecondPage(
+          title:
+              'Build your own adventure - Choose your journey ${adventure.name.toUpperCase()}',
+          form: adventure);
+    }));
   }
 
   String idGenerator() {

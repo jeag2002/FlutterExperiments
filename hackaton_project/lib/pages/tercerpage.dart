@@ -107,25 +107,28 @@ class TercerPageFormState extends State<TercerPageForm>
 
     storyIa.getFirstStep().then((data) {
       if ((data?.code == "200") || (data?.code == "999")) {
-        Story story = Story(
-            id: 0,
-            uuid: adventure.uuid,
-            stepType: "first",
-            step: data!.step,
-            optionOne: data.optionOne,
-            optionTwo: data.optionTwo);
+        if (data!.step != "") {
+          Story story = Story(
+              id: 0,
+              uuid: adventure.uuid,
+              stepType: "first",
+              step: data.step,
+              optionOne: data.optionOne,
+              optionTwo: data.optionTwo);
 
-        StoryDatabase()
-            .createDatabaseSync()
-            .then((data) => {StoryDatabase().insertStory(story)});
+          StoryDatabase()
+              .createDatabaseSync()
+              .then((response) => {StoryDatabase().insertStory(story)});
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return FourthPage(
-              title:
-                  'Build your own adventure - Step of your journey ${adventure.name.toUpperCase()}',
-              adventure: adventure,
-              stepStory: data!);
-        }));
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return FourthPage(
+                title:
+                    'Build your own adventure - Step of your journey ${adventure.name.toUpperCase()}',
+                adventure: adventure,
+                stepStory: data,
+                step: 1);
+          }));
+        }
       }
     });
   }

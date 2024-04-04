@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton_project/model/adventure.dart';
 import 'package:hackaton_project/model/stepstory.dart';
+import 'package:hackaton_project/engine/iaengine.dart';
+import 'package:hackaton_project/engine/iaengineservice.dart';
+import 'package:hackaton_project/model/story.dart';
+import 'package:hackaton_project/db/storydatabase.dart';
+import 'package:sprintf/sprintf.dart';
+import 'package:hackaton_project/pages/finalpage.dart';
 
 //https://stackoverflow.com/questions/43122113/sizing-elements-to-percentage-of-screen-width-height
 class FourthPage extends StatelessWidget {
@@ -8,10 +14,12 @@ class FourthPage extends StatelessWidget {
       {super.key,
       required this.title,
       required this.adventure,
-      required this.stepStory});
+      required this.stepStory,
+      required this.step});
   final String title;
   final Adventure adventure;
   final StepStory stepStory;
+  final int step;
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +38,35 @@ class FourthPage extends StatelessWidget {
             ),
           ),
         ),
-        body: FourthPageForm(adventure: adventure, stepStory: stepStory));
+        body: FourthPageForm(
+            adventure: adventure, stepStory: stepStory, step: step));
   }
 }
 
 class FourthPageForm extends StatefulWidget {
   const FourthPageForm(
-      {super.key, required this.adventure, required this.stepStory});
+      {super.key,
+      required this.adventure,
+      required this.stepStory,
+      required this.step});
   final Adventure adventure;
   final StepStory stepStory;
+  final int step;
   @override
   FourthPageFormState createState() {
     // ignore: no_logic_in_create_state
-    return FourthPageFormState(adventure: adventure, stepStory: stepStory);
+    return FourthPageFormState(
+        adventure: adventure, stepStory: stepStory, step: step);
   }
 }
 
 class FourthPageFormState extends State<FourthPageForm> {
-  FourthPageFormState({required this.adventure, required this.stepStory});
+  FourthPageFormState(
+      {required this.adventure, required this.stepStory, required this.step});
   final _formKey = GlobalKey<FormState>();
   final Adventure adventure;
   final StepStory stepStory;
+  final int step;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +138,9 @@ class FourthPageFormState extends State<FourthPageForm> {
                             width: 234,
                             height: 50,
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _updateProcess(stepStory.optionOne);
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -133,7 +151,9 @@ class FourthPageFormState extends State<FourthPageForm> {
                             width: 234,
                             height: 50,
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _updateProcess(stepStory.optionTwo);
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -144,7 +164,9 @@ class FourthPageFormState extends State<FourthPageForm> {
                             width: 234,
                             height: 50,
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _processAllStory(adventure.uuid);
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -154,21 +176,58 @@ class FourthPageFormState extends State<FourthPageForm> {
                       ])))
             ])));
   }
+
+  void _updateProcess(String option) {
+    IaGeneration ia = IaGeneration(adventure: adventure);
+    StoryOpenAiService storyIa = StoryOpenAiService(api: ia);
+
+    int nextStep = step + 1;
+
+    storyIa.getNextStep(option, nextStep).then((data) {
+      if ((data?.code == "200") || (data?.code == "999")) {
+        if (data!.step != "") {
+          String stepType = sprintf("Step-%s", [step.toString()]);
+
+          Story story = Story(
+              id: step,
+              uuid: adventure.uuid,
+              stepType: stepType,
+              step: data.step,
+              optionOne: data.optionOne,
+              optionTwo: data.optionTwo);
+
+          StoryDatabase()
+              .createDatabaseSync()
+              .then((response) => {StoryDatabase().insertStory(story)});
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return FourthPage(
+                title:
+                    'Build your own adventure - Step of your journey ${adventure.name.toUpperCase()}',
+                adventure: adventure,
+                stepStory: data,
+                step: nextStep);
+          }));
+        } else {
+          _processAllStory(adventure.uuid);
+        }
+      }
+    });
+  }
+
+  void _final(String totalStory) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return FinalPage(
+          title:
+              'Build your own adventure - END of your journey ${adventure.name.toUpperCase()}',
+          adventure: adventure,
+          finalStory: totalStory);
+    }));
+  }
+
+  void _processAllStory(String uuid) {
+    StoryDatabase().createDatabaseSync().then((data) => {
+          data.storyList(uuid).then((result) => {_final(result)})
+        });
+  }
 }
-
-/*
-Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-          ),
-          child: const Text('Go Back'),
-        ),
-      ),
-
-
-
-*/
