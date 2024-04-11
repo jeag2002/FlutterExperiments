@@ -77,27 +77,29 @@ class FourthPageFormState extends State<FourthPageForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: FractionallySizedBox(
-                    widthFactor: 0.65,
-                    child: TextFormField(
-                      initialValue: stepStory.step,
-                      minLines: 4,
-                      maxLines: 8,
-                      readOnly: true,
-                      keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        alignLabelWithHint: true,
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0))),
-                      ),
-                    ),
-                  )),
+              Visibility(
+                  visible: stepStory.step != "",
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: FractionallySizedBox(
+                        widthFactor: 0.65,
+                        child: TextFormField(
+                          initialValue: stepStory.step,
+                          minLines: 4,
+                          maxLines: 8,
+                          readOnly: true,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            alignLabelWithHint: true,
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0))),
+                          ),
+                        ),
+                      ))),
               FractionallySizedBox(
                   widthFactor: 0.65,
                   child: Column(
@@ -108,7 +110,7 @@ class FourthPageFormState extends State<FourthPageForm> {
                             initialValue: stepStory.optionOne,
                             keyboardType: TextInputType.multiline,
                             minLines: 2,
-                            maxLines: null,
+                            maxLines: 4,
                             readOnly: true,
                             decoration: const InputDecoration(
                                 label: Center(child: Text("First Option")),
@@ -120,7 +122,7 @@ class FourthPageFormState extends State<FourthPageForm> {
                             initialValue: stepStory.optionTwo,
                             keyboardType: TextInputType.multiline,
                             minLines: 2,
-                            maxLines: null,
+                            maxLines: 4,
                             readOnly: true,
                             decoration: const InputDecoration(
                                 label: Center(child: Text("Second Option")),
@@ -138,9 +140,10 @@ class FourthPageFormState extends State<FourthPageForm> {
                             width: 234,
                             height: 50,
                             child: ElevatedButton(
-                                onPressed: () {
-                                  _updateProcess(stepStory.optionOne);
-                                },
+                                onPressed: stepStory.optionOne == ""
+                                    ? null
+                                    : () =>
+                                        _chooseFunction(stepStory.optionOne),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -151,9 +154,10 @@ class FourthPageFormState extends State<FourthPageForm> {
                             width: 234,
                             height: 50,
                             child: ElevatedButton(
-                                onPressed: () {
-                                  _updateProcess(stepStory.optionTwo);
-                                },
+                                onPressed: stepStory.optionTwo == ""
+                                    ? null
+                                    : () =>
+                                        _chooseFunction(stepStory.optionTwo),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -177,6 +181,10 @@ class FourthPageFormState extends State<FourthPageForm> {
             ])));
   }
 
+  void _chooseFunction(String option) {
+    _updateProcess(option);
+  }
+
   void _updateProcess(String option) {
     IaGeneration ia = IaGeneration(adventure: adventure);
     StoryOpenAiService storyIa = StoryOpenAiService(api: ia);
@@ -185,7 +193,9 @@ class FourthPageFormState extends State<FourthPageForm> {
 
     storyIa.getNextStep(option, nextStep).then((data) {
       if ((data?.code == "200") || (data?.code == "999")) {
-        if (data!.step != "") {
+        if ((data!.step != "") ||
+            (data.optionOne != "") ||
+            (data.optionTwo != "")) {
           String stepType = sprintf("Step-%s", [step.toString()]);
 
           Story story = Story(
@@ -226,8 +236,31 @@ class FourthPageFormState extends State<FourthPageForm> {
   }
 
   void _processAllStory(String uuid) {
-    StoryDatabase().createDatabaseSync().then((data) => {
-          data.storyList(uuid).then((result) => {_final(result)})
-        });
+    IaGeneration ia = IaGeneration(adventure: adventure);
+    StoryOpenAiService storyIa = StoryOpenAiService(api: ia);
+
+    storyIa.getFinalStep().then((data) {
+      if ((data?.code == "200") || (data?.code == "999")) {
+        if ((data!.step != "") ||
+            (data.optionOne != "") ||
+            (data.optionTwo != "")) {
+          Story story = Story(
+              id: step,
+              uuid: adventure.uuid,
+              stepType: "Final",
+              step: data.step,
+              optionOne: "",
+              optionTwo: "");
+
+          StoryDatabase()
+              .createDatabaseSync()
+              .then((response) => {StoryDatabase().insertStory(story)});
+
+          StoryDatabase().createDatabaseSync().then((data) => {
+                data.storyList(uuid).then((result) => {_final(result)})
+              });
+        }
+      }
+    });
   }
 }

@@ -20,8 +20,6 @@ class DummyMessages {
         return messageSecondStep(name);
       case 3:
         return messageThirdStep(name);
-      case 4:
-        return messageFourthStep(name);
       default:
         return DummyMessage(story: "", optionOne: "", optionTwo: "");
     }
@@ -63,19 +61,14 @@ class DummyMessages {
     return stepThird;
   }
 
-  DummyMessage messageFourthStep(String name) {
-    DummyMessage stepFourth =
+  DummyMessage messageFinal(String name) {
+    DummyMessage stepFinal =
         DummyMessage(story: "", optionOne: "", optionTwo: "");
 
-    stepFourth.story =
-        'As $name made her wish, a brilliant light enveloped the entire forest, and her zombie friends appeared, dancing and celebrating. The animals and monsters joined in, creating a lively and joyful atmosphere.The end! Now, little one, what do you think Zoes next adventure should be?';
-
-    stepFourth.optionOne =
-        '$name and her friends organize a grand feast to celebrate their newfound happiness.';
-
-    stepFourth.optionTwo =
-        '$name and her friends plan a big party with games and music to share their joy with the entire enchanted land.';
-
-    return stepFourth;
+    stepFinal.story =
+        'As $name made her wish, a brilliant light enveloped the entire forest, and her zombie friends appeared, dancing and celebrating. The animals and monsters joined in, creating a lively and joyful atmosphere.The end! Now, little one, what do you think $name next adventure should be?';
+    stepFinal.optionOne = '';
+    stepFinal.optionTwo = '';
+    return stepFinal;
   }
 }

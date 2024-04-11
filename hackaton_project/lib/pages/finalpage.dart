@@ -77,7 +77,7 @@ class FinalPageFormState extends State<FinalPageForm> {
                     child: TextFormField(
                       initialValue: finalStory,
                       minLines: 4,
-                      maxLines: 12,
+                      maxLines: 8,
                       readOnly: true,
                       keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
@@ -168,15 +168,45 @@ class FinalPageFormState extends State<FinalPageForm> {
               Expanded(
                   child: Align(
                 alignment: FractionalOffset.bottomRight,
-                child: IconButton(
-                  iconSize: 50,
-                  icon: const Icon(Icons.mail),
-                  onPressed: () {
-                    _mail(adventure, finalStory);
-                  },
-                ),
+                child: Tooltip(
+                    message: 'Send your story by email',
+                    child: IconButton(
+                      iconSize: 50,
+                      icon: const Icon(Icons.mail),
+                      onPressed: () {
+                        _mail(adventure, finalStory, context);
+                      },
+                    )),
               )),
             ])));
+  }
+
+  showAlertDialog(BuildContext context, String msg) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 187, 222, 251),
+      title: const Text("MAIL"),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _exit(Adventure adventure) {
@@ -188,9 +218,11 @@ class FinalPageFormState extends State<FinalPageForm> {
     }
   }
 
-  void _mail(Adventure adventure, String story) {
+  void _mail(Adventure adventure, String story, BuildContext context) {
     Mail mail = Mail(adventure: adventure);
-    mail.sendMail(story);
+    mail
+        .sendMail(story)
+        .then((response) => {showAlertDialog(context, response)});
   }
 
   void _reboot(Adventure adventure) {

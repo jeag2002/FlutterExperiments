@@ -47,7 +47,7 @@ class MainApp extends StatelessWidget {
           surface: Color.fromARGB(255, 187, 222, 251),
           onSurface: Colors.black,
           // Colors that are not relevant to AppBar in DARK mode:
-          primary: Colors.green,
+          primary: Colors.black,
           onPrimary: Colors.transparent,
           secondary: Colors.transparent,
           onSecondary: Colors.transparent,

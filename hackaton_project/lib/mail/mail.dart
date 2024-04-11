@@ -5,6 +5,7 @@ import 'package:hackaton_project/model/adventure.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:hackaton_project/properties/properties.dart';
 import 'dart:core';
+import 'package:sprintf/sprintf.dart';
 
 //https://stackoverflow.com/questions/58731933/flutter-mailer-isnt-working-due-to-these-errors
 //https://support.google.com/accounts/answer/6010255?hl=en
@@ -15,7 +16,8 @@ class Mail {
   const Mail({required this.adventure});
   final Adventure adventure;
 
-  void sendMail(String msg) async {
+  Future<String> sendMail(String msg) async {
+    String returnMsg = "";
     // ignore: avoid_print
     print('[MAIL] send mail!');
     String name = adventure.name;
@@ -28,7 +30,7 @@ class Mail {
     // ignore: avoid_print
     final message = Message()
       ..from = Address(username, adventure.name)
-      ..recipients.add('recipient-email@gmail.com')
+      ..recipients.add(username)
       ..subject = 'your story $name'
       ..text = msg;
     try {
@@ -36,6 +38,7 @@ class Mail {
           await send(message, smtpServer, timeout: Duration(seconds: 5));
       // ignore: avoid_print
       print('[MAIL] Message sent: $sendReport');
+      returnMsg = "Message sent";
     } on MailerException catch (e) {
       // ignore: avoid_print
       print('[MAIL] Message not sent. $e');
@@ -43,6 +46,9 @@ class Mail {
         //ignore: avoid_print
         print('[MAIL] Problem: ${p.code}: ${p.msg}');
       }
+      returnMsg = "(ERROR) Message not sent!";
     }
+
+    return returnMsg;
   }
 }

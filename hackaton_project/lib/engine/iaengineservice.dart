@@ -12,4 +12,8 @@ class StoryOpenAiService {
   Future<StepStory?> getNextStep(String option, int nextStep) async {
     return api.generateNextStep(option, nextStep);
   }
+
+  Future<StepStory?> getFinalStep() async {
+    return api.generateFinalStep();
+  }
 }

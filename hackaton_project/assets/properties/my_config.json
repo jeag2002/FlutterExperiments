@@ -1,8 +1,9 @@
 {
     "url":"https://us-central1-aiplatform.googleapis.com/v1/projects/mygeminiproject/locations/us-central1/publishers/google/models/gemini-1.0-pro:streamGenerateContent?alt=sse",
     "api-key":"",
-    "first-message":"generate a %s story with %s as protagonist. Stop on one point and offer two ways to continue the story",
-    "next-message": "option %s chosen Continue the same story. Stop on one point and offer two ways to continue the story",
+    "first-message":"Generate a %s story with %s as protagonist. Stop on one point and create Option One: and Option Two: to continue the story",
+    "next-message": "Option %s chosen. Show the option chosen, continue with the story until stop on one point and create Option One: and Option Two: to continue the story",
+    "final-message": "Create a final for this story",
     "username-email": "",
-    "password-email": ""
+    "password-email": "" 
 }
