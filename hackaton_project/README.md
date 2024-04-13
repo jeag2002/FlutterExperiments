@@ -1,4 +1,4 @@
-# discover your own adventure
+# Discover your own adventure
 
 hackaton first example project.
 
