@@ -2,9 +2,9 @@
 
 hackaton first example project.
 
-![alt text](https://github.com/jeag2002/FlutterExperiments/tree/master/hackaton_project/hackaton_project.png?raw=true)
+![alt text](https://github.com/jeag2002/FlutterExperiments/blob/master/hackaton_project/hackaton_project.png?raw=true)
 
-Complete execution [here](https://www.youtube.com/watch?v=7CPZFWzqqB)
+Complete execution [here](https://youtu.be/7CPZFWzqqBI)
 
 (tested as native windows application and browser application; chrome/edge)
 
