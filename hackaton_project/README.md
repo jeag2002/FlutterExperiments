@@ -2,7 +2,7 @@
 
 hackaton first example project.
 
-![alt text](https://github.com/jeag2002/FlutterExperiments/blob/master/hackaton_project/hackaton_project.png?raw=true)
+![alt text](https://github.com/jeag2002/FlutterExperiments/blob/master/hackaton_project/hackaton_project.jpg?raw=true)
 
 Complete execution [here](https://youtu.be/7CPZFWzqqBI)
 
@@ -14,6 +14,10 @@ Complete execution [here](https://youtu.be/7CPZFWzqqBI)
 - Flutter 3.3.0
 - Google IA Gemini 1.0 (through Google Cloud)
 - SQLite 2.3.2
+
+## Presentation: 
+
+Can been seen [here](ppt/Your_Story_v1.ppt)
 
 ## Definition:
 
