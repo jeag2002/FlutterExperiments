@@ -23,23 +23,25 @@ class FourthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(title),
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-                colors: [Color.fromARGB(255, 187, 222, 251), Colors.white],
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(title),
+              automaticallyImplyLeading: false,
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.topRight,
+                    colors: [Color.fromARGB(255, 187, 222, 251), Colors.white],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        body: FourthPageForm(
-            adventure: adventure, stepStory: stepStory, step: step));
+            body: FourthPageForm(
+                adventure: adventure, stepStory: stepStory, step: step)));
   }
 }
 

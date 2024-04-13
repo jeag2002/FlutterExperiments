@@ -15,7 +15,11 @@ void main() async {
   } else {
     databaseFactory = databaseFactoryFfiWebNoWebWorker;
   }
-  runApp(const MainApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  MainApp app = const MainApp();
+  runApp(app);
 }
 
 class MainApp extends StatelessWidget {
