@@ -35,14 +35,15 @@ All the parameters and constants are defined here [my_config.json](assets/proper
 |username-email|user gmail account where we want to send the story|*****@gmail.com|
 |password-email|app password used by the flutter engine for access to the smtp server of gmail. Can be configured in this [way](https://support.google.com/accounts/answer/185833?hl=en)|<password>|
 
-For sending emails from flutter web application, library EmailJS. Tutorial of configuration [here] (https://blog.devgenius.io/send-emails-without-backend-in-flutter-48d0c506ab4c)
+For sending emails from flutter web application, library EmailJS. Tutorial of configuration [here](https://blog.devgenius.io/send-emails-without-backend-in-flutter-48d0c506ab4c)
 
 |parameters|description|value|
 |----------|-----------|-----|
-|emailjs-publickey|public key emailjs (access api)|<value public key>|
-|emailjs-privatekey|private key emailjs (access api)|<value private key>|
-|emailjs-serviceid|id service emailjs (connection)|<service id>|
-|emailjs-templateid|template message email (connection)|<template id>|
+|emailjs-publickey|public key emailjs (access api)||
+|emailjs-privatekey|private key emailjs (access api)||
+|emailjs-serviceid|id service emailjs (connection)||
+|emailjs-templateid|template message email (connection)||
+
 
 ## Execution:
 
