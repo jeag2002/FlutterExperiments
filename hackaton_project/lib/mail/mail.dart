@@ -5,12 +5,10 @@ import 'package:hackaton_project/model/adventure.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:hackaton_project/properties/properties.dart';
 import 'dart:core';
-import 'package:sprintf/sprintf.dart';
 
 //https://stackoverflow.com/questions/58731933/flutter-mailer-isnt-working-due-to-these-errors
 //https://support.google.com/accounts/answer/6010255?hl=en
 //https://www.youtube.com/watch?v=q6yu9iS5dks&ab_channel=FlutterWithUsama
-//(password no es el mio, es otro)
 
 class Mail {
   const Mail({required this.adventure});

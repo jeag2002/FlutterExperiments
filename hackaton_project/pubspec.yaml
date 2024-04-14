@@ -7,10 +7,11 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+  emailjs: ^1.1.0
   flutter:
     sdk: flutter
   foundation: ^0.0.5
-  http: ^1.2.1
+  http: ^0.13.6
   mailer: ^6.1.0
   path: ^1.9.0
   sprintf: ^7.0.0

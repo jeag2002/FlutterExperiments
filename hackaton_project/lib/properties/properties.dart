@@ -31,4 +31,8 @@ class PropertyFile {
   String getAttribute(String key) {
     return jsonMap[key];
   }
+
+  String getAttributeConst(String key) {
+    return jsonMap[key];
+  }
 }

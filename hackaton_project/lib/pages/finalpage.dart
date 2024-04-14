@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hackaton_project/model/adventure.dart';
 import 'package:hackaton_project/db/storydatabase.dart';
 import 'package:hackaton_project/mail/mail.dart';
+import 'package:hackaton_project/mail/mail_web.dart';
 import 'dart:io' show exit;
 // ignore: unused_import, avoid_web_libraries_in_flutter
 
@@ -221,10 +222,17 @@ class FinalPageFormState extends State<FinalPageForm> {
   }
 
   void _mail(Adventure adventure, String story, BuildContext context) {
-    Mail mail = Mail(adventure: adventure);
-    mail
-        .sendMail(story)
-        .then((response) => {showAlertDialog(context, response)});
+    if (!kIsWeb) {
+      Mail mail = Mail(adventure: adventure);
+      mail
+          .sendMail(story)
+          .then((response) => {showAlertDialog(context, response)});
+    } else {
+      MailWeb mail = MailWeb(adventure: adventure);
+      mail
+          .sendMailWeb(story)
+          .then((response) => {showAlertDialog(context, response)});
+    }
   }
 
   void _reboot(Adventure adventure) {

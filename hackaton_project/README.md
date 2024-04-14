@@ -4,7 +4,8 @@ hackaton first example project.
 
 ![alt text](https://github.com/jeag2002/FlutterExperiments/blob/master/hackaton_project/hackaton_project.jpg?raw=true)
 
-Complete execution [here](https://youtu.be/7CPZFWzqqBI)
+- Complete execution [here](https://youtu.be/7CPZFWzqqBI)
+- Complete execution web [here](https://youtu.be/rcHrNrNmHuw)
 
 (tested as native windows application and browser application; chrome/edge)
 
@@ -14,6 +15,7 @@ Complete execution [here](https://youtu.be/7CPZFWzqqBI)
 - Flutter 3.3.0
 - Google IA Gemini 1.0 (through Google Cloud)
 - SQLite 2.3.2
+- EmailJS 1.1.0
 
 ## Presentation: 
 
@@ -32,6 +34,15 @@ All the parameters and constants are defined here [my_config.json](assets/proper
 |final-message|query for gemeni engine. Create a final of the story|Create a final for this story|
 |username-email|user gmail account where we want to send the story|*****@gmail.com|
 |password-email|app password used by the flutter engine for access to the smtp server of gmail. Can be configured in this [way](https://support.google.com/accounts/answer/185833?hl=en)|<password>|
+
+For sending emails from flutter web application, library EmailJS. Tutorial of configuration [here] (https://blog.devgenius.io/send-emails-without-backend-in-flutter-48d0c506ab4c)
+
+|parameters|description|value|
+|----------|-----------|-----|
+|emailjs-publickey|public key emailjs (access api)|<value public key>|
+|emailjs-privatekey|private key emailjs (access api)|<value private key>|
+|emailjs-serviceid|id service emailjs (connection)|<service id>|
+|emailjs-templateid|template message email (connection)|<template id>|
 
 ## Execution:
 

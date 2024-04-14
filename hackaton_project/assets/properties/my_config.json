@@ -5,5 +5,9 @@
     "next-message": "Option %s chosen. Show the option chosen, continue with the story until stop on one point and create Option One: and Option Two: to continue the story",
     "final-message": "Create a final for this story",
     "username-email": "",
-    "password-email": "" 
+    "password-email": "",
+    "emailjs-publickey": "",
+    "emailjs-privatekey": "",
+    "emailjs-serviceid": "",
+    "emailjs-templateid": "" 
 }
