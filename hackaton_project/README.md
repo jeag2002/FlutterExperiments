@@ -31,7 +31,7 @@ All the parameters and constants are defined here [my_config.json](assets/proper
 |api-key|access-token for your google cloud gemini engine. Explanation how to create this api key [here](https://saturncloud.io/blog/how-to-get-an-access-token-from-google-cloud/)|<your gemini api access-token key>|
 |first-message|query for gemini engine. Create a beginning of the story|Generate a %s story with %s as protagonist. Stop on one point and create Option One: and Option Two: to continue the story|
 |next-message|query for gemini engine. Create a step of the story|Option %s chosen. Show the option chosen, continue with the story until stop on one point and create Option One: and Option Two: to continue the story|
-|final-message|query for gemeni engine. Create a final of the story|Create a final for this story|
+|final-message|query for gemini engine. Create a final of the story|Create a final for this story|
 |username-email|user gmail account where we want to send the story|*****@gmail.com|
 |password-email|app password used by the flutter engine for access to the smtp server of gmail. Can be configured in this [way](https://support.google.com/accounts/answer/185833?hl=en)|<password>|
 
